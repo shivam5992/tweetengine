@@ -1,0 +1,111 @@
+.navbar-inner, footer {
+  border: none;
+  padding: 15px 0;
+  background: url('../img/header-footer.png');
+}
+.navbar .brand-bootbus {
+	font-size: 30px;
+	cursor: pointer;
+	text-shadow: none;
+	color: white;
+  font-weight: bold;
+}
+
+.navbar .nav > li > a {
+	text-shadow: none;
+	color: white;
+	font-size: 17px;
+  font-weight: bold;
+  -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+         border-radius: 3px;
+}
+.navbar .nav > li > a:hover,
+.navbar .nav > li > a:focus {
+	color: white !important;
+	background: #2E3436 !important;
+}
+
+
+footer 
+{
+  width: 100%;
+  bottom: 0px;
+  color: white;
+  position: fixed;
+}
+
+
+@media (max-width: 979px) {
+  .nav-collapse .dropdown-menu a {
+    color: white;
+  }
+  .nav-collapse .dropdown-menu a:hover {
+    background-color: #2E3436;
+  }
+  .nav-collapse .nav-header,
+  .nav-collapse .dropdown-submenu > a {
+    display: none;
+  }
+}
+@media (min-width: 1200px) {
+  body {
+    padding-top: 70px;
+  }
+}
+
+
+
+#middiv
+{
+  margin-top: 20px;
+  height: 100%;
+  width:90%;
+  margin-bottom: 20px;
+}
+#emailbox
+{
+  width: 300px;
+  height: 40px;
+  font-size: 15px;
+}
+#butn
+{
+  height: 40px;
+  margin-top: -8px;
+}
+
+
+
+
+#mygrid
+{
+  width: 100%;
+  padding:6px;
+  height: 50px;
+}
+
+#twet
+{
+  float:left;
+  width: 80%;
+}
+#count
+{
+  float: left;
+  width: 20%;
+  font-size:20px;
+  line-height: 30px;
+  letter-spacing: 1px;
+}
+
+
+
+
+
+
+
+
+
+
+
