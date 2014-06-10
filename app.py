@@ -5,6 +5,7 @@ import time
 from threading import Thread
 from flask import Flask, render_template, session, request
 from flask.ext.socketio import SocketIO, emit, join_room, leave_room
+# from textblob import TextBlob
 
 app = Flask(__name__)
 app.debug = False
@@ -21,7 +22,6 @@ import json
 def cleaned(text):
     text = improve_repeated(remove_url(escape(text)))
     text = remove_special(text)
-    #text = split_attached(text)
     text = str(re.sub(' +',' ',text))
     return text
 
@@ -41,6 +41,9 @@ def background_thread(pager):
     hashtags_count = 0
     user_count = 0
     mentions_count = 0
+    negsentiment = 0
+    possentiment = 0
+
     
     for item in pager.get_iterator():
 
@@ -62,12 +65,22 @@ def background_thread(pager):
             if tags['screen_name'] not in mentions_tracker:
                 mentions_tracker.append(tags['screen_name'])
 
-        hashtags_count += len(hashtags_tracker)
-        mentions_count += len(mentions_tracker)
+        hashtags_count = len(hashtags_tracker)
+        mentions_count = len(mentions_tracker)
 
         if item['user']['name'] not in user_tracked:
             user_tracked.append(item['user']['name'])
-        user_count += len(user_tracked)
+        user_count = len(user_tracked)
+
+                
+        # blob = TextBlob(cleaned)
+        # for sentence in blob.sentences:
+        #   score = sentence.sentiment.polarity
+        #   if score < 0:
+        #     negsentiment += score
+        #   elif score > 0:
+        #     possentiment += score
+
 
         tweetify = {
          "original_tweet": tweet_text,
@@ -92,6 +105,12 @@ def background_thread(pager):
                       {'data': 'Server generated event', 'jss': json_encoded },
                       namespace='/test')
 
+@app.route('/d')
+def d():
+  return render_template('untitled.html')
+@app.route('/d1')
+def d1():
+  return render_template('bul.html')
 
 @app.route('/', methods = ['GET','POST'])
 @app.route('/index', methods = ['GET','POST'])
@@ -100,7 +119,9 @@ def index():
       tosearch = "#" + request.form['ht']
       pager = TwitterRestPager(api, 'search/tweets', {'q': tosearch, 'count': 1})
 
-      Thread(target=background_thread, args = (pager,)).start()
+      ## Here kill any previously running thread
+      p = Thread(target=background_thread, args = (pager,))
+      p.start()
       
       return render_template('index.html', tag = tosearch, home=False)
     return render_template('index.html', home=True, tag=None)
@@ -126,9 +147,11 @@ if __name__ == '__main__':
     access_token_key = data[2]
     access_token_secret = data[3]
     api = TwitterAPI(consumer_key, consumer_secret, access_token_key, access_token_secret)
+    
     pos_tracked, neg_tracked = [], []
     hashtags_tracker, mentions_tracker = [], []
     user_tracked = []
+    
     socketio.run(app)
 
 

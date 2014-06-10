@@ -36,8 +36,8 @@
             tuser = document.getElementById('tuser');
             tuser.innerHTML = res.user_count; 
 
-            $("#twet").append('<br>'+ res.original_tweet + '<br>')
-            
+            $('#birds').prepend('<br>'+res.original_tweet+'</br>')
+
             poss = document.getElementById('poss');
             poss.innerHTML = res.total_positive_words;
 
@@ -68,13 +68,18 @@
             </button>
             
             <div class="nav-collapse collapse">        
-              <ul class="nav pull-right">
-
-
-                <li><a href="#">Fork</a></li>
-                <li><a href="#">Contact</a></li>
-             
+              
+              <ul class="nav pull-left">
+                <li><a href="#">Tweetipy</a></li>
               </ul>
+
+              <form class="nav" action="" method="POST" name="hashform">
+                <input type="text" name="ht" placeholder="Enter Hash Tag" id="emailbox">
+                <input type="submit" class="btn btn-primary" value="Submit" id="butn"> 
+              </form>                  
+
+             
+
             </div>
 
           </div>
@@ -84,24 +89,11 @@
   
     <div class="content">
       <div class="container" id="middiv">
-            
-            <div id="formarea" align="center">
-              <form action="" method="POST" name="hashform">
-                <input type="text" name="ht" placeholder="Enter Hash Tag" id="emailbox">
-                <input type="submit" class="btn btn-primary" value="Submit" id="butn"> 
-              </form>                  
-            </div>
-
-        <hr>
         <h2 align="center">Real Time Tweet Analysis for {{ tag }}</h2>
+         <br>         
 
-
-
-         <br><br>
-         
          <div id="mygrid">
-         
-          <div id="twet">
+          <div id="twetdiv">
 
               <table>
                 <tr>
@@ -113,33 +105,33 @@
                   <td>&nbsp;&nbsp;</td>
                   <td><h4>Tweeting Users&nbsp;</h4></td><td><h5><div id="tuser"></div></h5></td>
                 </tr>
+
+                <tr>
+                  <td><h4>Positive Words&nbsp;</h4></td><td><h5><div id="poss"></div></h5></td>
+                  <td>&nbsp;&nbsp;</td>
+                  <td><h4>Negative Words&nbsp;</h4></td><td><h5><div id="negs"></div></h5></td>
+                  <td>&nbsp;&nbsp;</td>
+                  <td><h4>Avg Tweet Length&nbsp;</h4></td><td><h5><div id="atl"></div></h5></td>
+                </tr>
+
               </table>
 
-              <hr>
+            <hr>
 
-            
-            <h3>Tweet Streaming</h3>
-
-            <div id="twet"></div></li>
-            
-
-            
+            <h3>Streaming</h3>
+            <div id="birds">
+            </div>
           </div>
           
-          <div id="count">
-            <h3>Counters</h3>
-            <table>
-              <tr><td>Positive Words&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td id="td1"><div id="poss"></div></td></tr>
-              <tr><td>Negative Words</td><td id="td1"><div id="negs"></div></td></tr>
-              <tr><td>Avg Tweet Length</td><td id="td1"><div id="atl"></div></td></tr>
-            </table>
+          <div id="d3sec">
+            <h1>Hello</h1>
+            <div id="grph">
+            </div>
           </div>
-         
+
+
+
          </div>
-
-
-        <hr>   
-
 
       </div>
     </div>
@@ -164,10 +156,47 @@
 {% endif %}
 
 {% if home %}
-<div id="formarea" align="center">
-  <form action="" method="POST" name="hashform">
-    <input type="text" name="ht" placeholder="Enter Hash Tag" id="emailbox">
-    <input type="submit" class="btn btn-primary" value="Submit" id="butn"> 
-  </form>                  
-</div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="static/css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    
+    <header>
+      <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container">
+            
+            
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            
+            <div class="nav-collapse collapse">
+              
+              <ul class="nav pull-left">
+                <li><a href="#">Tweetipy</a></li>
+              </ul>
+
+              <form class="nav" action="" method="POST" name="hashform">
+                <input type="text" name="ht" placeholder="Enter Hash Tag" id="emailbox">
+                <input type="submit" class="btn btn-primary" value="Submit" id="butn"> 
+              </form> 
+
+             
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </header>
+  </body>
+</html>
 {% endif %}
