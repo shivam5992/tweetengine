@@ -9,48 +9,88 @@
 
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
-    <script type="text/javascript" charset="utf-8">
-        $(document).ready(function(){
-            namespace = '/test'; 
+    
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="static/js/sc.js"></script>
 
-            var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
-            socket.on('connect', function() {
-                socket.emit('my event', {data: 'I\'m connected!'});
-            });
+    <script type="text/javascript" src="static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="static/js/boot-business.js"></script>
 
-            
-            socket.on('my response', function(msg) {
-            
 
-            var res = JSON.parse(msg.jss)
 
-            twetC = document.getElementById('twetC');
-            twetC.innerHTML = res.tweet_count;
+<style>
+svg 
+{
+  font: 15px sans-serif;
+  fill:#bdc3c7;
+}
+ 
+.line 
+{
+  fill: none;
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+ 
+.axis path,
+.axis line 
+{
+  fill: none;
+  stroke: #bdc3c7;
+  shape-rendering: crispEdges;
+}
+</style>
 
-            hash = document.getElementById('hash');
-            hash.innerHTML = res.hashtags_count; 
+<script type="text/javascript" charset="utf-8">
 
-            ment = document.getElementById('ment');
-            ment.innerHTML = res.mentions_count; 
+                  
 
-            tuser = document.getElementById('tuser');
-            tuser.innerHTML = res.user_count; 
 
-            $('#birds').prepend('<br>'+res.original_tweet+'</br>')
+                  $(document).ready(function(){
 
-            poss = document.getElementById('poss');
-            poss.innerHTML = res.total_positive_words;
+                    namespace = '/test';
 
-            negs = document.getElementById('negs');
-            negs.innerHTML = res.total_negative_words;
+                    var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+                    socket.on('connect', function() {
+                        socket.emit('my event', {data: 'I\'m connected!'});
+                    });
 
-            atl = document.getElementById('atl');
-            atl.innerHTML = res.average_tweet_length;  
-            
-            });
+                    socket.on('my response', function(msg) {
+                    
+                    var res = JSON.parse(msg.jss)
 
-        });
-    </script>
+                    twetC = document.getElementById('twetC');
+                    twetC.innerHTML = res.tweet_count;
+                    update(res.tweet_count)
+
+
+                    hash = document.getElementById('hash');
+                    hash.innerHTML = res.hashtags_count; 
+
+                    ment = document.getElementById('ment');
+                    ment.innerHTML = res.mentions_count; 
+
+                    tuser = document.getElementById('tuser');
+                    tuser.innerHTML = res.user_count; 
+
+                    $('#birds').prepend('<br>'+res.original_tweet+'</br>')
+
+                    poss = document.getElementById('poss');
+                    poss.innerHTML = res.total_positive_words;
+
+                    negs = document.getElementById('negs');
+                    negs.innerHTML = res.total_negative_words;
+
+                    atl = document.getElementById('atl');
+                    atl.innerHTML = res.average_tweet_length;
+
+
+                    });
+
+                });
+              </script>
+
 
   </head>
   <body>
@@ -126,6 +166,30 @@
           <div id="d3sec">
             <h1>Hello</h1>
             <div id="grph">
+
+
+              <script type="text/javascript">
+                var chart2 = new chartRT();
+                  chart2.xText = "Seconds";
+                  chart2.yText = "Value";
+                  chart2.titleText = "Random Series";
+                  
+                  chart2.Ticks = 15;
+                  chart2.TickDuration = 1000;
+                  chart2.MaxValue = 10;
+                  chart2.addSeries("Random")
+                  
+                  var update = function (value) 
+                  {
+                      for (Name in chart2.chartSeries) 
+                      {
+                          chart2.chartSeries[Name] = value * 10;
+                      }
+                  }
+              </script>
+              
+
+
             </div>
           </div>
 
@@ -147,9 +211,13 @@
 
     </footer>
     
-    <script type="text/javascript" src="static/js/jquery.min.js"></script>
-    <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="static/js/boot-business.js"></script>
+     
+  <script type="text/javascript" charset="utf-8">
+
+
+        
+
+    </script>
  
   </body>
 </html>
@@ -163,6 +231,7 @@
     <link href="static/css/bootstrap.min.css" rel="stylesheet">
     <link href="static/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="static/css/style.css" rel="stylesheet">
+  
   </head>
   <body>
     
