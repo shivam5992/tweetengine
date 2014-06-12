@@ -16,3 +16,4 @@ requests-oauthlib==0.4.1
 textblob==0.8.4
 ujson==1.33
 wsgiref==0.1.2
+gunicorn
