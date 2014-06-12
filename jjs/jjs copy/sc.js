@@ -17,9 +17,9 @@ var chartRT = function () {
     _self.Ticks = 20;
     _self.TickDuration = 1000; //1 Sec
     _self.MaxValue = 100;
-    _self.w = 800;
+    _self.w = 400;
     _self.h = 400;
-    _self.margin = { top: 50, right: 120, bottom: 60, left: 300 };
+    _self.margin = { top: 30, right: 120, bottom: 60, left: 25 };
     _self.width = _self.w - _self.margin.left - _self.margin.right;
     _self.height = _self.h - _self.margin.top - _self.margin.bottom;
     _self.xText = '';
@@ -261,13 +261,6 @@ var chartRT = function () {
 //
 //
 //
-   var chart = new chartRT();
-    chart.xText = "Seconds";
-    chart.yText = "Value";
-    chart.titleText = "Random ODD Series";
-    chart.Ticks = 60;
-    chart.Init();
-
     var chart2 = new chartRT();
     chart2.xText = "Seconds";
     chart2.yText = "Value";
@@ -281,20 +274,16 @@ var chartRT = function () {
     var GenRandomSequence = function () {
 
         Sequence++;
-        chart.addSeries("Random_" + Sequence)
-        Sequence++;
-        chart2.addSeries("Random_" + Sequence)
+        chart2.addSeries(Sequence)
         if (Sequence < 20) {
-            setTimeout(GenRandomSequence, 5000);
+            setTimeout(GenRandomSequence, 50000);
         }
     }
-    setTimeout(GenRandomSequence, 5000);
+    setTimeout(GenRandomSequence, 1000);
 
 
     var update = function () {
-        for (Name in chart.chartSeries) {
-            chart.chartSeries[Name] = Math.random() * 10;
-        }
+        
         for (Name in chart2.chartSeries) {
             chart2.chartSeries[Name] = Math.random() * 10;
         }

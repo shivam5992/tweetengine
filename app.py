@@ -5,7 +5,8 @@ import time
 from threading import Thread
 from flask import Flask, render_template, session, request
 from flask.ext.socketio import SocketIO, emit, join_room, leave_room
-# from textblob import TextBlob
+from textblob import TextBlob
+from threading import *
 
 app = Flask(__name__)
 app.debug = False
@@ -48,69 +49,75 @@ def background_thread(pager):
     for item in pager.get_iterator():
 
         tweet_text = item['text'] if 'text' in item else item
-        tweet_text = tweet_text.encode("utf-8").decode("ascii","ignore")
-        cleaned_tweet = cleaned(tweet_text)
-        track_words(cleaned_tweet)
-        pos_score, neg_score = len(pos_tracked), len(neg_tracked)
+        if type(tweet_text) != dict:
+          tweet_text = tweet_text.encode("utf-8").decode("ascii","ignore")
+          cleaned_tweet = cleaned(tweet_text)
+          track_words(cleaned_tweet)
+          pos_score, neg_score = len(pos_tracked), len(neg_tracked)
 
-        tweet_count += 1
-        tweet_length += len(cleaned_tweet)
-        avg_tweet_length = tweet_length/tweet_count
+          tweet_count += 1
+          tweet_length += len(cleaned_tweet)
+          avg_tweet_length = tweet_length/tweet_count
 
-        for tags in item['entities']['hashtags']:
-            if tags['text'] not in hashtags_tracker:
-                hashtags_tracker.append(tags['text'])
+          for tags in item['entities']['hashtags']:
+              if tags['text'] not in hashtags_tracker:
+                  hashtags_tracker.append(tags['text'])
 
-        for tags in item['entities']['user_mentions']:
-            if tags['screen_name'] not in mentions_tracker:
-                mentions_tracker.append(tags['screen_name'])
+          for tags in item['entities']['user_mentions']:
+              if tags['screen_name'] not in mentions_tracker:
+                  mentions_tracker.append(tags['screen_name'])
 
-        hashtags_count = len(hashtags_tracker)
-        mentions_count = len(mentions_tracker)
+          hashtags_count = len(hashtags_tracker)
+          mentions_count = len(mentions_tracker)
 
-        if item['user']['name'] not in user_tracked:
-            user_tracked.append(item['user']['name'])
-        user_count = len(user_tracked)
+          if item['user']['name'] not in user_tracked:
+              user_tracked.append(item['user']['name'])
+          user_count = len(user_tracked)
 
-                
-        # blob = TextBlob(cleaned)
-        # for sentence in blob.sentences:
-        #   score = sentence.sentiment.polarity
-        #   if score < 0:
-        #     negsentiment += score
-        #   elif score > 0:
-        #     possentiment += score
+                  
+          blob = TextBlob(cleaned_tweet)
+          for sentence in blob.sentences:
+            score = sentence.sentiment.polarity
+            if score < 0:
+              negsentiment += score
+            elif score > 0:
+              possentiment += score
+
+          sentiment_polarity = possentiment + negsentiment
+          sentiment_polarity = "%.2f" % float(sentiment_polarity)
+          
+          possentimentres = "%.2f" % float(possentiment)
+          negsentimentres = "%.2f" % float(negsentiment)  
 
 
-        tweetify = {
-         "original_tweet": tweet_text,
-         "cleaned_tweet": cleaned_tweet,
-         "positive_words": flat(pos_tracked),
-         "negative_words": flat(neg_tracked),
-         "total_positive_words": pos_score,
-         "total_negative_words": neg_score,
-         "tweet_count": tweet_count,
-         "average_tweet_length": avg_tweet_length,
-         "mentions": flat(mentions_tracker),
-         "hashtags": flat(hashtags_tracker),
-         "mentions_count": mentions_count,
-         "hashtags_count": hashtags_count,
-         "user_tracked": user_tracked,
-         "user_count": user_count
-        }
 
-        json_encoded = json.dumps(tweetify)
 
-        socketio.emit('my response',
-                      {'data': 'Server generated event', 'jss': json_encoded },
-                      namespace='/test')
+          tweetify = {
+           "original_tweet": tweet_text,
+           "cleaned_tweet": cleaned_tweet,
+           "positive_words": flat(pos_tracked),
+           "negative_words": flat(neg_tracked),
+           "total_positive_words": pos_score,
+           "total_negative_words": neg_score,
+           "tweet_count": tweet_count,
+           "average_tweet_length": avg_tweet_length,
+           "mentions": flat(mentions_tracker),
+           "hashtags": flat(hashtags_tracker),
+           "mentions_count": mentions_count,
+           "hashtags_count": hashtags_count,
+           "user_tracked": user_tracked,
+           "user_count": user_count,
+           "sentiment_polarity":sentiment_polarity,
+           "positivity": possentimentres,
+           "negativity": negsentimentres
+          }
 
-@app.route('/d')
-def d():
-  return render_template('untitled.html')
-@app.route('/d1')
-def d1():
-  return render_template('bul.html')
+          json_encoded = json.dumps(tweetify)
+
+          socketio.emit('my response',
+                        {'data': 'Server generated event', 'jss': json_encoded },
+                        namespace='/test')
+
 
 @app.route('/', methods = ['GET','POST'])
 @app.route('/index', methods = ['GET','POST'])
@@ -119,7 +126,13 @@ def index():
       tosearch = "#" + request.form['ht']
       pager = TwitterRestPager(api, 'search/tweets', {'q': tosearch, 'count': 1})
 
-      ## Here kill any previously running thread
+      for thread in enumerate():
+        if thread.isAlive():
+          try:
+            thread._Thread__stop()
+          except:
+            print(str(thread.getName()) + ' could not be terminated')
+
       p = Thread(target=background_thread, args = (pager,))
       p.start()
       

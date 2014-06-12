@@ -43,10 +43,6 @@ svg
 </style>
 
 <script type="text/javascript" charset="utf-8">
-
-                  
-
-
                   $(document).ready(function(){
 
                     namespace = '/test';
@@ -62,7 +58,7 @@ svg
 
                     twetC = document.getElementById('twetC');
                     twetC.innerHTML = res.tweet_count;
-                    update(res.tweet_count)
+                    //update(res.tweet_count)
 
 
                     hash = document.getElementById('hash');
@@ -85,11 +81,19 @@ svg
                     atl = document.getElementById('atl');
                     atl.innerHTML = res.average_tweet_length;
 
+                    sp = document.getElementById('sp');
+                    sp.innerHTML = res.sentiment_polarity;
+
+                    posvity = document.getElementById('posvity');
+                    posvity.innerHTML = res.positivity;
+
+                    negvity = document.getElementById('negvity');
+                    negvity.innerHTML = res.negativity;
 
                     });
 
                 });
-              </script>
+</script>
 
 
   </head>
@@ -135,7 +139,7 @@ svg
          <div id="mygrid">
           <div id="twetdiv">
 
-              <table>
+              <table id="tabs">
                 <tr>
                   <td><h4>Tweets Streamed&nbsp;</h4></td><td><h5><div id="twetC"></div></h5></td>
                   <td>&nbsp;&nbsp;</td>
@@ -144,6 +148,8 @@ svg
                   <td><h4>Mentions Count&nbsp;</h4></td><td><h5><div id="ment"></div></h5></td>
                   <td>&nbsp;&nbsp;</td>
                   <td><h4>Tweeting Users&nbsp;</h4></td><td><h5><div id="tuser"></div></h5></td>
+                  <td>&nbsp;&nbsp;</td>
+                  <td><h4>Avg Tweet Length&nbsp;</h4></td><td><h5><div id="atl"></div></h5></td>
                 </tr>
 
                 <tr>
@@ -151,33 +157,35 @@ svg
                   <td>&nbsp;&nbsp;</td>
                   <td><h4>Negative Words&nbsp;</h4></td><td><h5><div id="negs"></div></h5></td>
                   <td>&nbsp;&nbsp;</td>
-                  <td><h4>Avg Tweet Length&nbsp;</h4></td><td><h5><div id="atl"></div></h5></td>
+                  <td><h4>Positivity&nbsp;</h4></td><td><h5><div id="posvity"></div></h5></td>
+                  <td>&nbsp;&nbsp;</td>
+                  <td><h4>Negativity&nbsp;</h4></td><td><h5><div id="negvity"></div></h5></td>
+                  <td>&nbsp;&nbsp;</td>
+                  <td><h4>Sentiment Polarity&nbsp;</h4></td><td><h5><div id="sp"></div></h5></td>
                 </tr>
 
               </table>
-
+          </div>
             <hr>
-
+          <div id="streamdiv">  
             <h3>Streaming</h3>
             <div id="birds">
             </div>
           </div>
           
           <div id="d3sec">
-            <h1>Hello</h1>
+            
             <div id="grph">
-
-
               <script type="text/javascript">
-                var chart2 = new chartRT();
-                  chart2.xText = "Seconds";
-                  chart2.yText = "Value";
-                  chart2.titleText = "Random Series";
+                //var chart2 = new chartRT();
+                  //chart2.xText = "Seconds";
+                  //chart2.yText = "Value";
+                  //chart2.titleText = "Random Series";
                   
-                  chart2.Ticks = 15;
-                  chart2.TickDuration = 1000;
-                  chart2.MaxValue = 10;
-                  chart2.addSeries("Random")
+                  //chart2.Ticks = 15;
+                  //chart2.TickDuration = 1000;
+                  //chart2.MaxValue = 10;
+                  //chart2.addSeries(1)
                   
                   var update = function (value) 
                   {
@@ -187,10 +195,8 @@ svg
                       }
                   }
               </script>
-              
-
-
             </div>
+
           </div>
 
 
@@ -205,7 +211,7 @@ svg
          
       <div class="container">
         <p>
-          &copy; Developed with love by Shivam Bansal.
+          &copy; Developed with love by <a href="http://www.shivambansal.com">Shivam Bansal</a>.
         </p>
       </div>
 
