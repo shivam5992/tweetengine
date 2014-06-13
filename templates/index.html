@@ -73,10 +73,10 @@ svg
                     $('#birds').prepend('<br>'+res.original_tweet+'</br>')
 
                     poss = document.getElementById('poss');
-                    poss.innerHTML = res.total_positive_words;
+                    poss.innerHTML = res.optimism;
 
                     negs = document.getElementById('negs');
-                    negs.innerHTML = res.total_negative_words;
+                    negs.innerHTML = res.pessimism;
 
                     atl = document.getElementById('atl');
                     atl.innerHTML = res.average_tweet_length;
@@ -89,6 +89,18 @@ svg
 
                     negvity = document.getElementById('negvity');
                     negvity.innerHTML = res.negativity;
+
+                    CLI = document.getElementById('CLI');
+                    CLI.innerHTML = res.CLI1;
+
+                    ARI = document.getElementById('ARI');
+                    ARI.innerHTML = res.ARI1;
+
+                    wrdc = document.getElementById('wrdc');
+                    wrdc.innerHTML = res.word_count;
+
+                    rts = document.getElementById('rts');
+                    rts.innerHTML = res.retweets;
 
                     });
 
@@ -150,18 +162,36 @@ svg
                   <td><h4>Tweeting Users&nbsp;</h4></td><td><h5><div id="tuser"></div></h5></td>
                   <td>&nbsp;&nbsp;</td>
                   <td><h4>Avg Tweet Length&nbsp;</h4></td><td><h5><div id="atl"></div></h5></td>
+                  <td>&nbsp;&nbsp;</td>
+                  <td><h4>Coleman-Liau Index&nbsp;</h4></td><td><h5><div id="CLI"></div></h5></td>
                 </tr>
 
                 <tr>
-                  <td><h4>Positive Words&nbsp;</h4></td><td><h5><div id="poss"></div></h5></td>
+                  <td><h4>Optimism&nbsp;</h4></td><td><h5><div id="poss"></div></h5></td>
                   <td>&nbsp;&nbsp;</td>
-                  <td><h4>Negative Words&nbsp;</h4></td><td><h5><div id="negs"></div></h5></td>
+                  <td><h4>Pessimism&nbsp;</h4></td><td><h5><div id="negs"></div></h5></td>
                   <td>&nbsp;&nbsp;</td>
                   <td><h4>Positivity&nbsp;</h4></td><td><h5><div id="posvity"></div></h5></td>
                   <td>&nbsp;&nbsp;</td>
                   <td><h4>Negativity&nbsp;</h4></td><td><h5><div id="negvity"></div></h5></td>
                   <td>&nbsp;&nbsp;</td>
                   <td><h4>Sentiment Polarity&nbsp;</h4></td><td><h5><div id="sp"></div></h5></td>
+                  <td>&nbsp;&nbsp;</td>
+                  <td><h4>Automated Readability Index &nbsp;</h4></td><td><h5><div id="ARI"></div></h5></td>
+                </tr>
+
+                <tr>
+                  <td><h4>Word Count&nbsp;</h4></td><td><h5><div id="wrdc"></div></h5></td>
+                  <td>&nbsp;&nbsp;</td>
+                  <td><h4>Retweets&nbsp;</h4></td><td><h5><div id="rts"></div></h5></td>
+                  <td>&nbsp;&nbsp;</td>
+                  <td><h4>Positivity&nbsp;</h4></td><td><h5><div id="posvity"></div></h5></td>
+                  <td>&nbsp;&nbsp;</td>
+                  <td><h4>Negativity&nbsp;</h4></td><td><h5><div id="negvity"></div></h5></td>
+                  <td>&nbsp;&nbsp;</td>
+                  <td><h4>Sentiment Polarity&nbsp;</h4></td><td><h5><div id="sp"></div></h5></td>
+                  <td>&nbsp;&nbsp;</td>
+                  <td><h4>Automated Readability Index &nbsp;</h4></td><td><h5><div id="ARI"></div></h5></td>
                 </tr>
 
               </table>
