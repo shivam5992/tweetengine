@@ -1,24 +1,21 @@
 from gevent import monkey
-monkey.patch_all()
-
 import time
 from threading import Thread
 from flask import Flask, render_template, session, request
 from flask.ext.socketio import SocketIO, emit, join_room, leave_room
 from textblob import TextBlob
 from threading import *
-
-app = Flask(__name__)
-app.debug = False
-app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app)
-
-
 import sys, codecs, re
 from TwitterAPI import TwitterAPI, TwitterRestPager
 from tweetprocess import *
 from pprint import pprint
 import json
+
+app = Flask(__name__)
+app.debug = False
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app)
+monkey.patch_all()
 
 def cleaned(text):
     text = improve_repeated(remove_url(escape(text)))
@@ -28,7 +25,6 @@ def cleaned(text):
 
 def track_words(text):
     for word in text.split():
-        word_count_les.append(word)
         if word.lower() in positives:
             pos_tracked.append(word)
         elif word.lower() in negatives:
@@ -39,6 +35,18 @@ def flat(lis):
 
 def roundoff(data):
   return "%.2f" % data
+
+def lexical_density(text):
+  consider = ['JJ', 'JJR', 'JJS', 'NN', 'NNP', 'NNS', 'NNPS', 'RB', 'RBR','RBS','VB','VBD','VBG','VBN','VBP','VBZ']
+  blob = TextBlob(text)
+  nlex = 0
+  n = len(blob.words)
+  for tags in blob.tags:
+    if str(tags[1]) in consider:
+      nlex += 1
+  ld = (float(nlex)/n) * 100
+  return "%.2f" % ld
+
 
 def background_thread(r):
     tweet_length = 0
@@ -76,9 +84,10 @@ def background_thread(r):
           if item['user']['name'] not in user_tracked:
               user_tracked.append(item['user']['name'])
           user_count = len(user_tracked)
-          word_count = len(word_count_les)
-                  
           blob = TextBlob(cleaned_tweet)
+
+          word_count = len(blob.words)
+                  
           for sentence in blob.sentences:
             score = sentence.sentiment.polarity
             if score < 0:
@@ -89,27 +98,31 @@ def background_thread(r):
           sentiment_polarity = possentiment + negsentiment
           sentiment_polarity = "%.2f" % float(sentiment_polarity)
           
-          possentimentres = "%.2f" % float(possentiment)
-          negsentimentres = "%.2f" % float(negsentiment)  
+          possentimentres = roundoff(possentiment)
+          negsentimentres = roundoff(negsentiment)  
 
           S = tweet_count
           L = tweet_length
           CLI = 0.058 * L - 0.296 * S - 15.8
 
-          CLI = "%.2f" % CLI
+          CLI = roundoff(CLI)
 
           chrs = tweet_length
           wds = word_count
           snts = tweet_count
           ARI = 4.71 * ( float(chrs)/wds ) + 0.5 * ( float(wds)/snts ) - 21.43
 
-          ARI = "%.2f" % ARI
+          ARI = roundoff(ARI)
 
           optimism =  roundoff(float(pos_score)/word_count)
           pessimism = roundoff(float(neg_score)/word_count)
 
           if item['retweeted'] == True:
             retweets += 1
+
+          ld = lexical_density(cleaned_tweet)
+
+          loc = item['user']['location']
 
           tweetify = {
            "original_tweet": tweet_text,
@@ -132,15 +145,14 @@ def background_thread(r):
            "CLI1":CLI,
            "ARI1":ARI,
            "word_count":word_count,
-           "retweets":retweets
+           "retweets":retweets,
+           "lexical":ld,
+           "location1":loc
           }
 
           json_encoded = json.dumps(tweetify)
-
           socketio.emit('my response',
-                        {'data': 'Server generated event', 'jss': json_encoded },
-                        namespace='/test')
-
+                        {'data': 'Server generated event', 'jss': json_encoded }, namespace='/test')
 
 @app.route('/', methods = ['GET','POST'])
 @app.route('/index', methods = ['GET','POST'])
@@ -149,12 +161,12 @@ def index():
       tosearch = "#" + request.form['ht']
       r = api.request('statuses/filter', {'track': tosearch})
 
-      for thread in enumerate():
-        if thread.isAlive():
-          try:
-            thread._Thread__stop()
-          except:
-            print(str(thread.getName()) + ' could not be terminated')
+      # for thread in enumerate():
+      #   if thread.isAlive():
+      #     try:
+      #       thread._Thread__stop()
+      #     except:
+      #       print(str(thread.getName()) + ' could not be terminated')
 
       p = Thread(target=background_thread, args = (r,))
       p.start()
@@ -187,7 +199,6 @@ if __name__ == '__main__':
     pos_tracked, neg_tracked = [], []
     hashtags_tracker, mentions_tracker = [], []
     user_tracked = []
-    word_count_les = []
     
     socketio.run(app)
 

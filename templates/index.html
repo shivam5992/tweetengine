@@ -43,6 +43,7 @@ svg
 </style>
 
 <script type="text/javascript" charset="utf-8">
+                  var visited_locs = []
                   $(document).ready(function(){
 
                     namespace = '/test';
@@ -102,6 +103,17 @@ svg
                     rts = document.getElementById('rts');
                     rts.innerHTML = res.retweets;
 
+                    ld = document.getElementById('ld');
+                    ld.innerHTML = res.lexical;
+
+                    locc = res.location1
+                    var found = $.inArray(locc, visited_locs);
+                    if (found == -1 && locc != "")
+                    {
+                      visited_locs.push(locc)
+                      $('#loc').prepend('<br>'+ res.location1 +'</br>')
+                    }
+
                     });
 
                 });
@@ -133,8 +145,6 @@ svg
                 <input type="text" name="ht" placeholder="Enter Hash Tag" id="emailbox">
                 <input type="submit" class="btn btn-primary" value="Submit" id="butn"> 
               </form>                  
-
-             
 
             </div>
 
@@ -185,7 +195,7 @@ svg
                   <td>&nbsp;&nbsp;</td>
                   <td><h4>Retweets&nbsp;</h4></td><td><h5><div id="rts"></div></h5></td>
                   <td>&nbsp;&nbsp;</td>
-                  <td><h4>Positivity&nbsp;</h4></td><td><h5><div id="posvity"></div></h5></td>
+                  <td><h4>Lexical Density&nbsp;</h4></td><td><h5><div id="ld"></div></h5></td>
                   <td>&nbsp;&nbsp;</td>
                   <td><h4>Negativity&nbsp;</h4></td><td><h5><div id="negvity"></div></h5></td>
                   <td>&nbsp;&nbsp;</td>
@@ -206,7 +216,9 @@ svg
           <div id="d3sec">
             
             <div id="grph">
-              <script type="text/javascript">
+              <h3>Locations</h3>
+              <div id="loc"></div>
+                <script type="text/javascript">
                 //var chart2 = new chartRT();
                   //chart2.xText = "Seconds";
                   //chart2.yText = "Value";
@@ -217,13 +229,13 @@ svg
                   //chart2.MaxValue = 10;
                   //chart2.addSeries(1)
                   
-                  var update = function (value) 
-                  {
-                      for (Name in chart2.chartSeries) 
-                      {
-                          chart2.chartSeries[Name] = value * 10;
-                      }
-                  }
+                  // var update = function (value) 
+                  // {
+                  //     for (Name in chart2.chartSeries) 
+                  //     {
+                  //         chart2.chartSeries[Name] = value * 10;
+                  //     }
+                  // }
               </script>
             </div>
 

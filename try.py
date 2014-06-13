@@ -13,19 +13,18 @@ pager = TwitterRestPager(api, 'search/tweets', {'q': 'modi', 'count': 1})
 
 r = api.request('statuses/filter', {'track': 'modi'})
 
-def lexical_density(text):
-	consider = ['JJ', 'JJR', 'JJS', 'NN', 'NNP', 'NNS', 'NNPS', 'RB', 'RBR','RBS','VB','VBD','VBG','VBN','VBP','VBZ']
-	blob = TextBlob(text)
-	nlex = 0
-	n = len(blob.words)
-	for tags in blob.tags:
-		if str(tags[1]) in consider:
-			nlex += 1
-	ld = (float(nlex)/n) * 100
-	print "%.2f" % ld
+# def lexical_density(text):
+# 	consider = ['JJ', 'JJR', 'JJS', 'NN', 'NNP', 'NNS', 'NNPS', 'RB', 'RBR','RBS','VB','VBD','VBG','VBN','VBP','VBZ']
+# 	blob = TextBlob(text)
+# 	nlex = 0
+# 	n = len(blob.words)
+# 	for tags in blob.tags:
+# 		if str(tags[1]) in consider:
+# 			nlex += 1
+# 	ld = (float(nlex)/n) * 100
+# 	return "%.2f" % ld
 
-print lexical_density("hello modi ji you are awesome")
+# print lexical_density("hello modi ji you are awesome")
 
-# for item in r:
-# 	wiki = TextBlob(item['text'])
-# 	print wiki.tags
+for item in r:
+	print item['user']['location']
