@@ -47,6 +47,8 @@ def lexical_density(text):
   ld = (float(nlex)/n) * 100
   return "%.2f" % ld
 
+def horizon(text):
+  return len(re.findall("\d+", text))
 
 def background_thread(r):
     tweet_length = 0
@@ -57,6 +59,7 @@ def background_thread(r):
     negsentiment = 0
     possentiment = 0
     retweets = 0
+    hc = 0
 
     for item in r:
         tweet_text = item['text'] if 'text' in item else item
@@ -124,6 +127,8 @@ def background_thread(r):
 
           loc = item['user']['location']
 
+          hc += horizon(cleaned_tweet)
+
           tweetify = {
            "original_tweet": tweet_text,
            "cleaned_tweet": cleaned_tweet,
@@ -147,7 +152,8 @@ def background_thread(r):
            "word_count":word_count,
            "retweets":retweets,
            "lexical":ld,
-           "location1":loc
+           "location1":loc,
+           "horizon":hc
           }
 
           json_encoded = json.dumps(tweetify)

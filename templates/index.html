@@ -106,6 +106,9 @@ svg
                     ld = document.getElementById('ld');
                     ld.innerHTML = res.lexical;
 
+                    hc = document.getElementById('hc');
+                    hc.innerHTML = res.horizon;
+
                     locc = res.location1
                     var found = $.inArray(locc, visited_locs);
                     if (found == -1 && locc != "")
@@ -113,6 +116,10 @@ svg
                       visited_locs.push(locc)
                       $('#loc').prepend('<br>'+ res.location1 +'</br>')
                     }
+
+                    lcz = document.getElementById('lcz');
+                    lcz.innerHTML = visited_locs.size;
+
 
                     });
 
@@ -197,9 +204,9 @@ svg
                   <td>&nbsp;&nbsp;</td>
                   <td><h4>Lexical Density&nbsp;</h4></td><td><h5><div id="ld"></div></h5></td>
                   <td>&nbsp;&nbsp;</td>
-                  <td><h4>Negativity&nbsp;</h4></td><td><h5><div id="negvity"></div></h5></td>
+                  <td><h4>Horizon Content&nbsp;</h4></td><td><h5><div id="hc"></div></h5></td>
                   <td>&nbsp;&nbsp;</td>
-                  <td><h4>Sentiment Polarity&nbsp;</h4></td><td><h5><div id="sp"></div></h5></td>
+                  <td><h4>Locations Tracked&nbsp;</h4></td><td><h5><div id="lcz"></div></h5></td>
                   <td>&nbsp;&nbsp;</td>
                   <td><h4>Automated Readability Index &nbsp;</h4></td><td><h5><div id="ARI"></div></h5></td>
                 </tr>

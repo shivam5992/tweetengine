@@ -24,7 +24,11 @@ r = api.request('statuses/filter', {'track': 'modi'})
 # 	ld = (float(nlex)/n) * 100
 # 	return "%.2f" % ld
 
-# print lexical_density("hello modi ji you are awesome")
+def hc(text):
+	import re
+	print len(re.findall("\d+", text))
 
-for item in r:
-	print item['user']['location']
+print hc("hello modi ji you are awesome WC2014")
+
+# for item in r:
+# 	print "", item['user']['location']
