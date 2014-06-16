@@ -45,7 +45,7 @@ var chartRT = function () {
         //
         //  SVG Canvas
         //
-        _self.svg = d3.select("body").append("svg")
+        _self.svg = d3.select("#grph").append("svg")
          .attr("id", 'chart-' + _self.guid)
         .attr("width", _self.w)
         .attr("height", _self.h)

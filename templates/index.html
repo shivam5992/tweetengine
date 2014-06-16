@@ -59,7 +59,7 @@ svg
 
                     twetC = document.getElementById('twetC');
                     twetC.innerHTML = res.tweet_count;
-                    //update(res.tweet_count)
+                    update(res.tweet_count)
 
 
                     hash = document.getElementById('hash');
@@ -118,8 +118,10 @@ svg
                     }
 
                     lcz = document.getElementById('lcz');
-                    lcz.innerHTML = visited_locs.size;
+                    lcz.innerHTML = visited_locs.length;
 
+                    nlex = document.getElementById('nlex');
+                    nlex.innerHTML = res.lwd;
 
                     });
 
@@ -208,7 +210,7 @@ svg
                   <td>&nbsp;&nbsp;</td>
                   <td><h4>Locations Tracked&nbsp;</h4></td><td><h5><div id="lcz"></div></h5></td>
                   <td>&nbsp;&nbsp;</td>
-                  <td><h4>Automated Readability Index &nbsp;</h4></td><td><h5><div id="ARI"></div></h5></td>
+                  <td><h4>Lexical Words&nbsp;</h4></td><td><h5><div id="nlex"></div></h5></td>
                 </tr>
 
               </table>
@@ -223,28 +225,29 @@ svg
           <div id="d3sec">
             
             <div id="grph">
-              <h3>Locations</h3>
-              <div id="loc"></div>
-                <script type="text/javascript">
-                //var chart2 = new chartRT();
-                  //chart2.xText = "Seconds";
-                  //chart2.yText = "Value";
-                  //chart2.titleText = "Random Series";
-                  
-                  //chart2.Ticks = 15;
-                  //chart2.TickDuration = 1000;
-                  //chart2.MaxValue = 10;
-                  //chart2.addSeries(1)
-                  
-                  // var update = function (value) 
-                  // {
-                  //     for (Name in chart2.chartSeries) 
-                  //     {
-                  //         chart2.chartSeries[Name] = value * 10;
-                  //     }
-                  // }
-              </script>
             </div>
+              <!-- h3>Locations</h3 -->
+              <!--div id="loc"></div -->
+                <script type="text/javascript">
+                var chart2 = new chartRT();
+                  chart2.xText = "Seconds";
+                  chart2.yText = "Value";
+                  chart2.titleText = "Random Series";
+                  
+                  chart2.Ticks = 15;
+                  chart2.TickDuration = 1000;
+                  chart2.MaxValue = 10;
+                  chart2.addSeries(1)
+                  
+                  var update = function (value) 
+                  {
+                      for (Name in chart2.chartSeries) 
+                      {
+                          chart2.chartSeries[Name] = value * 10;
+                      }
+                  }
+              </script>
+            <!-- /div -->
 
           </div>
 
