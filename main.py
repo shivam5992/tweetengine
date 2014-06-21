@@ -51,15 +51,10 @@ def horizon(text):
   return len(re.findall("\d+", text))
 
 def background_thread(r):
-    tweet_length = 0
-    tweet_count = 0
-    hashtags_count = 0
-    user_count = 0
-    mentions_count = 0
-    negsentiment = 0
-    possentiment = 0
-    retweets = 0
-    hc = 0
+    tweet_length, tweet_count = 0, 0
+    hashtags_count, user_count = 0, 0
+    mentions_count, negsentiment, possentiment = 0, 0, 0
+    retweets, hc = 0, 0
 
     for item in r:
         tweet_text = item['text'] if 'text' in item else item
@@ -107,14 +102,12 @@ def background_thread(r):
           S = tweet_count
           L = tweet_length
           CLI = 0.058 * L - 0.296 * S - 15.8
-
           CLI = roundoff(CLI)
 
           chrs = tweet_length
           wds = word_count
           snts = tweet_count
           ARI = 4.71 * ( float(chrs)/wds ) + 0.5 * ( float(wds)/snts ) - 21.43
-
           ARI = roundoff(ARI)
 
           optimism =  roundoff(float(pos_score)/word_count)
@@ -124,9 +117,7 @@ def background_thread(r):
             retweets += 1
 
           ld, nlex = lexical_density(cleaned_tweet)
-
           loc = item['user']['location']
-
           hc += horizon(cleaned_tweet)
 
           tweetify = {
@@ -167,17 +158,8 @@ def index():
     if request.method == 'POST':
       tosearch = "#" + request.form['ht']
       r = api.request('statuses/filter', {'track': tosearch})
-
-      # for thread in enumerate():
-      #   if thread.isAlive():
-      #     try:
-      #       thread._Thread__stop()
-      #     except:
-      #       print(str(thread.getName()) + ' could not be terminated')
-
       p = Thread(target=background_thread, args = (r,))
       p.start()
-      
       return render_template('index.html', tag = tosearch, home=False)
     return render_template('index.html', home=True, tag=None)
 
@@ -202,11 +184,9 @@ if __name__ == '__main__':
     access_token_key = data[2]
     access_token_secret = data[3]
     api = TwitterAPI(consumer_key, consumer_secret, access_token_key, access_token_secret)
-    
     pos_tracked, neg_tracked = [], []
     hashtags_tracker, mentions_tracker = [], []
     user_tracked = []
-    
     socketio.run(app)
 
 

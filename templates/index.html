@@ -17,126 +17,124 @@
     <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="static/js/boot-business.js"></script>
 
+    <style>
+    svg 
+    {
+      font: 15px sans-serif;
+      fill:#bdc3c7;
+    }
+     
+    .line 
+    {
+      fill: none;
+      stroke: #000;
+      stroke-width: 1.5px;
+    }
+     
+    .axis path,
+    .axis line 
+    {
+      fill: none;
+      stroke: #bdc3c7;
+      shape-rendering: crispEdges;
+    }
+    </style>
+
+    <script type="text/javascript" charset="utf-8">
+          var visited_locs = []
+          $(document).ready(function(){
+
+            namespace = '/test';
+
+            var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+            socket.on('connect', function() {
+                socket.emit('my event', {data: 'I\'m connected!'});
+            });
+
+            socket.on('my response', function(msg) {
+            
+            var res = JSON.parse(msg.jss)
+
+            twetC = document.getElementById('twetC');
+            twetC.innerHTML = res.tweet_count;
 
 
-<style>
-svg 
-{
-  font: 15px sans-serif;
-  fill:#bdc3c7;
-}
- 
-.line 
-{
-  fill: none;
-  stroke: #000;
-  stroke-width: 1.5px;
-}
- 
-.axis path,
-.axis line 
-{
-  fill: none;
-  stroke: #bdc3c7;
-  shape-rendering: crispEdges;
-}
-</style>
+            hash = document.getElementById('hash');
+            hash.innerHTML = res.hashtags_count; 
 
-<script type="text/javascript" charset="utf-8">
-                  var visited_locs = []
-                  $(document).ready(function(){
+            ment = document.getElementById('ment');
+            ment.innerHTML = res.mentions_count; 
 
-                    namespace = '/test';
+            tuser = document.getElementById('tuser');
+            tuser.innerHTML = res.user_count; 
 
-                    var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
-                    socket.on('connect', function() {
-                        socket.emit('my event', {data: 'I\'m connected!'});
-                    });
+            $('#birds').prepend('<br>'+res.original_tweet+'</br>')
 
-                    socket.on('my response', function(msg) {
-                    
-                    var res = JSON.parse(msg.jss)
+            poss = document.getElementById('poss');
+            poss.innerHTML = res.optimism;
 
-                    twetC = document.getElementById('twetC');
-                    twetC.innerHTML = res.tweet_count;
-                    update(res.tweet_count)
+            negs = document.getElementById('negs');
+            negs.innerHTML = res.pessimism;
+
+            atl = document.getElementById('atl');
+            atl.innerHTML = res.average_tweet_length;
 
 
-                    hash = document.getElementById('hash');
-                    hash.innerHTML = res.hashtags_count; 
+            sp = document.getElementById('sp');
+            sp.innerHTML = res.sentiment_polarity;
 
-                    ment = document.getElementById('ment');
-                    ment.innerHTML = res.mentions_count; 
+            posvity = document.getElementById('posvity');
+            posvity.innerHTML = res.positivity;
 
-                    tuser = document.getElementById('tuser');
-                    tuser.innerHTML = res.user_count; 
+            negvity = document.getElementById('negvity');
+            negvity.innerHTML = res.negativity;
 
-                    $('#birds').prepend('<br>'+res.original_tweet+'</br>')
+            CLI = document.getElementById('CLI');
+            CLI.innerHTML = res.CLI1;
 
-                    poss = document.getElementById('poss');
-                    poss.innerHTML = res.optimism;
+            ARI = document.getElementById('ARI');
+            ARI.innerHTML = res.ARI1;
 
-                    negs = document.getElementById('negs');
-                    negs.innerHTML = res.pessimism;
+            wrdc = document.getElementById('wrdc');
+            wrdc.innerHTML = res.word_count;
 
-                    atl = document.getElementById('atl');
-                    atl.innerHTML = res.average_tweet_length;
+            rts = document.getElementById('rts');
+            rts.innerHTML = res.retweets;
 
-                    sp = document.getElementById('sp');
-                    sp.innerHTML = res.sentiment_polarity;
+            ld = document.getElementById('ld');
+            ld.innerHTML = res.lexical;
 
-                    posvity = document.getElementById('posvity');
-                    posvity.innerHTML = res.positivity;
+            hc = document.getElementById('hc');
+            hc.innerHTML = res.horizon;
 
-                    negvity = document.getElementById('negvity');
-                    negvity.innerHTML = res.negativity;
+            locc = res.location1
+            var found = $.inArray(locc, visited_locs);
+            if (found == -1 && locc != "")
+            {
+              visited_locs.push(locc)
+              $('#loc').prepend('<br>'+ res.location1 +'</br>')
+            }
 
-                    CLI = document.getElementById('CLI');
-                    CLI.innerHTML = res.CLI1;
+            lcz = document.getElementById('lcz');
+            lcz.innerHTML = visited_locs.length;
 
-                    ARI = document.getElementById('ARI');
-                    ARI.innerHTML = res.ARI1;
+            nlex = document.getElementById('nlex');
+            nlex.innerHTML = res.lwd;
 
-                    wrdc = document.getElementById('wrdc');
-                    wrdc.innerHTML = res.word_count;
+            updateO(res.optimism)
+            updateP(res.pessimism)
 
-                    rts = document.getElementById('rts');
-                    rts.innerHTML = res.retweets;
+            });
 
-                    ld = document.getElementById('ld');
-                    ld.innerHTML = res.lexical;
+        });
+    </script>
+</head>
 
-                    hc = document.getElementById('hc');
-                    hc.innerHTML = res.horizon;
-
-                    locc = res.location1
-                    var found = $.inArray(locc, visited_locs);
-                    if (found == -1 && locc != "")
-                    {
-                      visited_locs.push(locc)
-                      $('#loc').prepend('<br>'+ res.location1 +'</br>')
-                    }
-
-                    lcz = document.getElementById('lcz');
-                    lcz.innerHTML = visited_locs.length;
-
-                    nlex = document.getElementById('nlex');
-                    nlex.innerHTML = res.lwd;
-
-                    });
-
-                });
-</script>
-
-
-  </head>
-  <body>
-    
+<body>
     <header>
       <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container">
-            
             
             <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
               <span class="icon-bar"></span>
@@ -145,16 +143,13 @@ svg
             </button>
             
             <div class="nav-collapse collapse">        
-              
               <ul class="nav pull-left">
                 <li><a href="#">Tweetipy</a></li>
               </ul>
-
               <form class="nav" action="" method="POST" name="hashform">
                 <input type="text" name="ht" placeholder="Enter Hash Tag" id="emailbox">
                 <input type="submit" class="btn btn-primary" value="Submit" id="butn"> 
               </form>                  
-
             </div>
 
           </div>
@@ -215,44 +210,62 @@ svg
 
               </table>
           </div>
-            <hr>
+          <hr>
+
           <div id="streamdiv">  
             <h3>Streaming</h3>
             <div id="birds">
             </div>
+
           </div>
           
           <div id="d3sec">
+           
+            <!-- h3>Locations</h3> 
+            <div id="loc"></div -->
             
             <div id="grph">
             </div>
-              <!-- h3>Locations</h3 -->
-              <!--div id="loc"></div -->
+              
                 <script type="text/javascript">
-                var chart2 = new chartRT();
-                  chart2.xText = "Seconds";
+                  var chart2 = new chartRT();
+                  chart2.xText = "Time";
                   chart2.yText = "Value";
-                  chart2.titleText = "Random Series";
+                  chart2.titleText = "Optimism";
                   
                   chart2.Ticks = 15;
                   chart2.TickDuration = 1000;
-                  chart2.MaxValue = 10;
+                  chart2.MaxValue = 100;
                   chart2.addSeries(1)
                   
-                  var update = function (value) 
+                  var updateO = function (value) 
                   {
                       for (Name in chart2.chartSeries) 
                       {
                           chart2.chartSeries[Name] = value * 10;
                       }
                   }
+
+                  var chart1 = new chartRT();
+                  chart1.xText = "Time";
+                  chart1.yText = "Value";
+                  chart1.titleText = "Pessimism";
+                  
+                  chart1.Ticks = 15;
+                  chart1.TickDuration = 1000;
+                  chart1.MaxValue = 100;
+                  chart1.addSeries(1)
+                  
+                  var updateP = function (value) 
+                  {
+                      for (Name in chart1.chartSeries) 
+                      {
+                          chart1.chartSeries[Name] = value * 10;
+                      }
+                  }
+
               </script>
-            <!-- /div -->
-
           </div>
-
-
-
          </div>
 
       </div>
@@ -260,23 +273,16 @@ svg
     
 
     <footer>
-         
       <div class="container">
         <p>
           &copy; Developed with love by <a href="http://www.shivambansal.com">Shivam Bansal</a>.
         </p>
       </div>
-
     </footer>
     
      
-  <script type="text/javascript" charset="utf-8">
-
-
-        
-
+    <script type="text/javascript" charset="utf-8">
     </script>
- 
   </body>
 </html>
 {% endif %}
@@ -298,7 +304,6 @@ svg
         <div class="navbar-inner">
           <div class="container">
             
-            
             <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
@@ -306,24 +311,20 @@ svg
             </button>
             
             <div class="nav-collapse collapse">
-              
               <ul class="nav pull-left">
                 <li><a href="#">Tweetipy</a></li>
               </ul>
-
               <form class="nav" action="" method="POST" name="hashform">
                 <input type="text" name="ht" placeholder="Enter Hash Tag" id="emailbox">
                 <input type="submit" class="btn btn-primary" value="Submit" id="butn"> 
               </form> 
-
-             
-
             </div>
 
           </div>
         </div>
       </div>
     </header>
+
   </body>
 </html>
 {% endif %}
