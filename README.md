@@ -44,6 +44,6 @@ Usage
 
 ToDo
 ----
-Threading Bug
+Threading Bug:  Implement Thread class rather directly using Thread.
 
 
